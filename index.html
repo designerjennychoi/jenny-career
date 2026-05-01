@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jenny — Senior Product Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --ink: #000000;
+  --muted: #000000;
+  --faint: #e8e8e8;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: #000; color: #fff; }
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+
+/* ── CURSOR ── */
+@media (hover: hover) {
+  *, *:hover { cursor: none !important; }
+}
+#cursor {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid #000;
+  border-radius: 50%;
+  background: transparent;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease;
+  display: none;
+}
+body.has-mouse #cursor { display: block; }
+#cursor.lh {
+  width: 48px; height: 48px;
+}
+
+/* ── NAV ── */
+nav {
+  padding: 48px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  opacity: 0;
+  animation: appear 0.4s ease forwards 0.05s;
+}
+.nav-id {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.nav-links { list-style: none; display: flex; gap: 28px; }
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--ink); }
+
+/* ── HERO ── */
+.hero { padding: 80px 0 72px; }
+
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: appear 0.4s ease forwards 0.15s;
+}
+
+.hero-name {
+  font-family: var(--font-sans);
+  font-size: clamp(76px, 14vw, 116px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  margin-bottom: 4px;
+  opacity: 0;
+  animation: appear 0.4s ease forwards 0.25s;
+}
+
+.hero-name-echo {
+  font-family: var(--font-sans);
+  font-size: clamp(76px, 14vw, 116px);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px #d0d0d0;
+  margin-bottom: 52px;
+  opacity: 0;
+  animation: appear 0.4s ease forwards 0.32s;
+}
+
+.hero-bio {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #000;
+  max-width: 500px;
+  margin-bottom: 40px;
+  font-weight: 500;
+  opacity: 0;
+  animation: appear 0.4s ease forwards 0.4s;
+}
+
+.hero-links {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--muted);
+  opacity: 0;
+  animation: appear 0.4s ease forwards 0.5s;
+}
+.hero-links a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--faint);
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+.hero-links a:hover { border-color: var(--ink); }
+.dot { margin: 0 10px; color: #000; }
+
+/* ── SECTION ── */
+section { padding: 64px 0; border-top: 1px solid var(--faint); }
+.s-label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+/* ── NUMBERS ── */
+.num-hl {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  margin-bottom: 14px;
+  color: #000;
+}
+.num-sub {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 52px;
+  max-width: 420px;
+  line-height: 1.7;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--faint);
+  margin-bottom: 48px;
+}
+.stat {
+  padding: 32px 28px;
+  border-right: 1px solid var(--faint);
+  border-bottom: 1px solid var(--faint);
+  position: relative;
+  transition: transform 0.22s cubic-bezier(0.4,0,0.2,1),
+              border-color 0.22s ease,
+              background 0.22s ease,
+              box-shadow 0.22s ease;
+  z-index: 1;
+}
+.stat:nth-child(2n) { border-right: none; }
+.stat:nth-last-child(-n+2) { border-bottom: none; }
+.stat:hover {
+  transform: translateY(-5px);
+  border-color: #000;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  z-index: 2;
+}
+.stat.inv { background: #000; }
+.stat.inv:hover { background: #000; border-color: #000; }
+.stat.inv .s-num { color: #fff; }
+.stat.inv .s-lbl { color: #fff; }
+.stat.inv .s-note { color: #fff; }
+.stat.inv .s-extra { color: #fff; }
+
+.s-num {
+  font-family: var(--font-sans);
+  font-size: clamp(48px, 8vw, 64px);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 12px;
+  letter-spacing: -0.04em;
+}
+.s-lbl { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 4px; }
+.s-note {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #000;
+  letter-spacing: 0.02em;
+}
+.s-extra {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #000;
+  letter-spacing: 0.04em;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  margin-top: 0;
+  transition: max-height 0.28s ease,
+              opacity 0.22s ease,
+              margin-top 0.22s ease;
+}
+.stat:hover .s-extra {
+  max-height: 32px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+.funnel-title {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #000;
+  margin-bottom: 18px;
+}
+.f-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.f-row.show { opacity: 1; transform: none; }
+.f-lbl {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #000;
+  width: 140px;
+  flex-shrink: 0;
+}
+.f-track { flex: 1; height: 2px; background: #e8e8e8; overflow: hidden; }
+.f-fill { height: 100%; background: var(--ink); width: 0; transition: width 0.9s cubic-bezier(0.4,0,0.2,1); }
+.f-n {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #000;
+  width: 32px;
+  text-align: right;
+}
+
+.note-block {
+  margin-top: 44px;
+  padding: 24px 28px;
+  border-left: 2px solid #000;
+  background: #fff;
+}
+.note-block p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  line-height: 1.8;
+}
+.note-block strong { font-weight: 700; color: #000; }
+
+/* ── STRATEGY ── */
+.s-intro {
+  font-size: 36px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.2;
+  max-width: 100%;
+  margin-bottom: 56px;
+  letter-spacing: -0.04em;
+}
+.steps { list-style: none; border-top: 1px solid var(--faint); }
+.step {
+  border-bottom: 1px solid var(--faint);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.step.show { opacity: 1; transform: none; }
+.step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 22px 0;
+  user-select: none;
+}
+.step-head:hover .step-title { color: #000; }
+.step-n {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #000;
+  flex-shrink: 0;
+  width: 28px;
+}
+.step-title {
+  font-size: clamp(16px, 2.5vw, 18px);
+  font-weight: 700;
+  flex: 1;
+  transition: color 0.15s;
+  color: #000;
+  letter-spacing: -0.01em;
+}
+.step-toggle {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: #000;
+  flex-shrink: 0;
+  transition: transform 0.25s ease, color 0.15s;
+  line-height: 1;
+}
+.step-head:hover .step-toggle { color: #000; }
+.step.open .step-toggle { transform: rotate(45deg); color: #000; }
+.step-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; opacity: 0; }
+.step:hover .step-body { max-height: 160px; opacity: 0.5; }
+.step.open .step-body { max-height: 160px; opacity: 1; }
+.step-body p {
+  padding: 0 0 22px 42px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  line-height: 1.8;
+}
+
+.loop-wrap {
+  margin-top: 52px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--faint);
+  overflow: hidden;
+}
+.loop-item {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 16px 8px;
+  border-right: 1px solid var(--faint);
+  transition: background 0.15s, color 0.15s;
+  color: #000;
+}
+.loop-item:last-child { border-right: none; }
+.loop-item:hover { background: #000; color: #fff; }
+
+/* ── COFFEE ── */
+.coffee-wrap { border: 1px solid var(--faint); padding: 36px; }
+.coffee-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
+.coffee-emoji { font-size: 28px; line-height: 1.2; flex-shrink: 0; }
+.coffee-title {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: #000;
+}
+.coffee-when { font-family: var(--font-mono); font-size: 15px; color: #000; }
+.coffee-desc {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000;
+  line-height: 1.75;
+  margin-bottom: 20px;
+  max-width: 600px;
+}
+.coffee-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.c-tag {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  padding: 6px 14px;
+  border: 1px solid var(--faint);
+  color: #000;
+  transition: border-color 0.15s, color 0.15s;
+}
+.c-tag:hover { border-color: #000; color: #000; }
+
+/* ── FOOTER ── */
+footer { padding: 48px 0 56px; border-top: 1px solid var(--faint); }
+.ft-links { font-family: var(--font-mono); font-size: 15px; margin-bottom: 16px; }
+.ft-links a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--faint);
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+.ft-links a:hover { border-color: var(--ink); }
+.ft-copy { font-family: var(--font-mono); font-size: 14px; color: var(--muted); letter-spacing: 0.04em; }
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 560px) {
+  .wrap { padding: 0 24px; }  .stats { grid-template-columns: 1fr; }
+  .stat { border-right: none !important; }
+  .stat:not(:last-child) { border-bottom: 1px solid var(--faint) !important; }
+  .loop-wrap { flex-wrap: wrap; }
+  .loop-item { flex: none; width: 50%; }
+  nav { flex-direction: column; gap: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<div class="wrap">
+
+  <nav>
+    <span class="nav-id">jenny.design</span>
+    <ul class="nav-links">
+      <li><a href="#numbers">numbers</a></li>
+      <li><a href="#strategy">strategy</a></li>
+      <li><a href="#chat">coffee chat</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero">
+    <p class="hero-tag">Senior Product Designer · London</p>
+    <h1 class="hero-name">I'm Jenny.</h1>
+    <p class="hero-bio">
+      With a strong UX and visual background, I design high-traffic consumer products across global enterprises and startups. I translate business, technical, and regulatory constraints into intuitive, accessible solutions at scale.
+    </p>
+    <div class="hero-links">
+      <a href="https://www.linkedin.com/in/designerjennychoi/" target="_blank">LinkedIn</a>
+      <span class="dot">·</span>
+      <a href="mailto:designer.jennychoi@gmail.com">Email</a>
+      <span class="dot">·</span>
+      <a href="#chat">Coffee Chat</a>
+    </div>
+  </header>
+
+  <section id="numbers">
+    <p class="s-label">9 months · by the numbers</p>
+    <h2 class="num-hl">308 applications. 1 offer. No regrets.</h2>
+    <p class="num-sub">After 9 months of job hunting — 7 of them on a contractor role — here's the honest breakdown.</p>
+
+    <div class="stats">
+      <div class="stat inv">
+        <div class="s-num" data-target="308">0</div>
+        <div class="s-lbl">Applications sent</div>
+        <div class="s-note">across all seniority levels</div>
+        <div class="s-extra">→ 9 months, consistently</div>
+      </div>
+      <div class="stat">
+        <div class="s-num" data-target="24">0</div>
+        <div class="s-lbl">Passed CV screening</div>
+        <div class="s-note">incl. Amazon online assessment</div>
+        <div class="s-extra">→ 7.8% conversion rate</div>
+      </div>
+      <div class="stat">
+        <div class="s-num" data-target="16">0</div>
+        <div class="s-lbl">Companies interviewed</div>
+        <div class="s-note">hiring manager + case studies</div>
+        <div class="s-extra">→ 66.7% from screening</div>
+      </div>
+      <div class="stat">
+        <div class="s-num" data-target="0.32" data-decimal>0</div>
+        <div class="s-lbl">Success rate</div>
+        <div class="s-note">1 offer · senior product designer</div>
+        <div class="s-extra">→ No regrets.</div>
+      </div>
+    </div>
+
+    <p class="funnel-title">Conversion funnel</p>
+    <div class="f-row" data-delay="0">
+      <span class="f-lbl">Applications</span>
+      <div class="f-track"><div class="f-fill" data-w="100"></div></div>
+      <span class="f-n">308</span>
+    </div>
+    <div class="f-row" data-delay="80">
+      <span class="f-lbl">CV screen</span>
+      <div class="f-track"><div class="f-fill" data-w="7.8"></div></div>
+      <span class="f-n">24</span>
+    </div>
+    <div class="f-row" data-delay="160">
+      <span class="f-lbl">Interviews</span>
+      <div class="f-track"><div class="f-fill" data-w="5.2"></div></div>
+      <span class="f-n">16</span>
+    </div>
+    <div class="f-row" data-delay="240">
+      <span class="f-lbl">Final rounds</span>
+      <div class="f-track"><div class="f-fill" data-w="0.65"></div></div>
+      <span class="f-n">2</span>
+    </div>
+    <div class="f-row" data-delay="320">
+      <span class="f-lbl">Offers</span>
+      <div class="f-track"><div class="f-fill" data-w="0.32"></div></div>
+      <span class="f-n">1</span>
+    </div>
+
+    <div class="note-block">
+      <p>I'm sharing this because the job market is <strong>really challenging right now</strong>. It can feel discouraging and overwhelming. But if you keep going, reflect on what didn't work, and stay open to learning — you will find the right opportunity. My success rate was 0.32%, but I have no regrets. <strong>Every rejection was a lesson.</strong></p>
+    </div>
+  </section>
+
+  <section id="strategy">
+    <p class="s-label">The loop that worked</p>
+    <p class="s-intro">No shortcuts. No overnight success. Just positioning → feedback → adjustment → repeat.</p>
+
+    <ul class="steps">
+      <li class="step" tabindex="0">
+        <div class="step-head">
+          <span class="step-n">01</span>
+          <span class="step-title">Get honest about where you are</span>
+          <span class="step-toggle">+</span>
+        </div>
+        <div class="step-body"><p>Analysed 5–10 job descriptions, highlighted what I was confident in and what I needed to improve. Realised I sat somewhere between mid-weight and senior — and that ambiguity was hurting my positioning.</p></div>
+      </li>
+      <li class="step" tabindex="0">
+        <div class="step-head">
+          <span class="step-n">02</span>
+          <span class="step-title">Test your positioning with the market</span>
+          <span class="step-toggle">+</span>
+        </div>
+        <div class="step-body"><p>Applied across seniority levels. Most responses came from senior roles — encouraging, until I got stuck at hiring manager and case study stages. Common feedback: "We went with someone more experienced."</p></div>
+      </li>
+      <li class="step" tabindex="0">
+        <div class="step-head">
+          <span class="step-n">03</span>
+          <span class="step-title">Listen to feedback and adjust</span>
+          <span class="step-toggle">+</span>
+        </div>
+        <div class="step-body"><p>More than once I heard: not enough experience working closely with engineers. Instead of arguing with it, I accepted it. That acceptance was the real turning point.</p></div>
+      </li>
+      <li class="step" tabindex="0">
+        <div class="step-head">
+          <span class="step-n">04</span>
+          <span class="step-title">Fill the gaps intentionally</span>
+          <span class="step-toggle">+</span>
+        </div>
+        <div class="step-body"><p>Joined bootcamps, side projects, hackathons. Spoke with more experienced designers. Deliberately targeted roles with close engineer collaboration. The contractor role was a gap-filler, not a fallback.</p></div>
+      </li>
+      <li class="step" tabindex="0">
+        <div class="step-head">
+          <span class="step-n">05</span>
+          <span class="step-title">Notice small progress</span>
+          <span class="step-toggle">+</span>
+        </div>
+        <div class="step-body"><p>At first, only passed recruiter calls. Then hiring manager interviews. Then case studies. Then cultural fit. One stage at a time — each new milestone confirmed the adjustments were working.</p></div>
+      </li>
+      <li class="step" tabindex="0">
+        <div class="step-head">
+          <span class="step-n">06</span>
+          <span class="step-title">Land the role and keep growing</span>
+          <span class="step-toggle">+</span>
+        </div>
+        <div class="step-body"><p>Reached final rounds with two companies. One hired me. Still very aware of my gaps — I set development goals and review them regularly with my line manager. The loop doesn't stop at the offer.</p></div>
+      </li>
+    </ul>
+
+    <div class="loop-wrap">
+      <div class="loop-item">Positioning</div>
+      <div class="loop-item">→ Feedback</div>
+      <div class="loop-item">→ Adjustment</div>
+      <div class="loop-item">→ Repeat</div>
+    </div>
+  </section>
+
+  <section id="chat">
+    <p class="s-label">Open to chat</p>
+    <div class="coffee-title">30-min coffee chat</div>
+    <div class="coffee-when" style="margin-bottom:20px;">Every Wednesday · 6 pm UK time</div>
+    <p class="coffee-desc">I received so much help from others during my search. If you're currently looking and could use some support, I'm happy to talk. Book a slot directly below — or DM me on LinkedIn with a clear question first.</p>
+    <div class="coffee-tags">
+      <span class="c-tag">CV review</span>
+      <span class="c-tag">Portfolio feedback</span>
+      <span class="c-tag">Interview prep</span>
+      <span class="c-tag">Presentation advice</span>
+      <span class="c-tag">Career questions</span>
+    </div>
+    <a href="https://calendly.com/designer-jennychoi/career-mentorship" target="_blank" style="display:inline-block;margin-top:20px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.02em;padding:12px 24px;border:1.5px solid #000;color:#000;text-decoration:none;transition:background 0.15s,color 0.15s;" onmouseenter="this.style.background='#000';this.style.color='#fff'" onmouseleave="this.style.background='transparent';this.style.color='#000'">Book a slot →</a>
+  </section>
+
+  <footer>
+    <div class="ft-links">
+      <a href="https://www.linkedin.com/in/designerjennychoi/" target="_blank">LinkedIn</a>
+      <span class="dot">·</span>
+      <a href="mailto:designer.jennychoi@gmail.com">Email</a>
+      <span class="dot">·</span>
+      <a href="#chat">Coffee Chat</a>
+    </div>
+    <p class="ft-copy">Jenny · Senior Product Designer · London, UK</p>
+  </footer>
+
+</div>
+
+<script>
+// ── CURSOR ──
+const cursor = document.getElementById('cursor');
+let cx = -100, cy = -100, tx = -100, ty = -100;
+
+document.addEventListener('mousemove', e => {
+  document.body.classList.add('has-mouse');
+  tx = e.clientX; ty = e.clientY;
+}, { once: false });
+
+;(function loop() {
+  cx += (tx - cx) * 0.2;
+  cy += (ty - cy) * 0.2;
+  cursor.style.left = cx + 'px';
+  cursor.style.top  = cy + 'px';
+  requestAnimationFrame(loop);
+})();
+
+document.querySelectorAll('a, .step-head, .loop-item, .c-tag, .stat').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('lh'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('lh'));
+});
+
+// ── OBSERVERS ──
+// count-up
+document.querySelectorAll('.s-num[data-target]').forEach(el => {
+  new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      obs.unobserve(e.target);
+      const target = parseFloat(el.dataset.target);
+      const dec = el.hasAttribute('data-decimal');
+      const t0 = performance.now();
+      const tick = now => {
+        const p = Math.min((now - t0) / 800, 1);
+        const v = (1 - Math.pow(1 - p, 3)) * target;
+        el.textContent = dec ? v.toFixed(2) + '%' : Math.round(v);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }, { threshold: 0.5 }).observe(el);
+});
+
+// funnel
+new IntersectionObserver((entries, obs) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    obs.unobserve(e.target);
+    document.querySelectorAll('.f-row').forEach(row => {
+      const delay = parseInt(row.dataset.delay || 0);
+      setTimeout(() => {
+        row.classList.add('show');
+        const fill = row.querySelector('.f-fill');
+        setTimeout(() => { fill.style.width = fill.dataset.w + '%'; }, 60);
+      }, delay);
+    });
+  });
+}, { threshold: 0.2 }).observe(document.querySelector('#numbers'));
+
+// steps
+document.querySelectorAll('.step').forEach((step, i) => {
+  step.style.transitionDelay = (i * 0.06) + 's';
+  new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('show');
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.1 }).observe(step);
+});
+
+// ── ACCORDION ──
+document.querySelectorAll('.step').forEach(step => {
+  const head = step.querySelector('.step-head');
+  head.addEventListener('click', () => {
+    const open = step.classList.contains('open');
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('open'));
+    if (!open) step.classList.add('open');
+  });
+  step.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); head.click(); }
+  });
+});
+</script>
+</body>
+</html>
